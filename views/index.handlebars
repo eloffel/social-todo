@@ -1,4 +1,4 @@
-<h1>Social todo app for cpsc113</h1>
+<h1>Social todo app for cpsc213</h1>
 
 {{#if errors}}
 <ul style="color:red" class="errors">
@@ -16,6 +16,21 @@
         {{#if tasks}}
             <ul class="tasks">
             {{#each tasks}}
+                <li class="tasks-item">
+                  <span class="task-name">{{this.name}} - {{#if this.isComplete}}Complete{{else}}Incomplete{{/if}}</span>
+                  <form action = "/tasks/{{this._id}}/delete" method="POST">
+                    <input type="submit" name="delete" class="delete" value="Delete">
+                  </form>
+                {{#if this.isComplete}}
+                <form action = "/tasks/{{this._id}}/incomplete" method="POST">
+                    <input type="submit" name="toggle" class="toggle" value="Mark Incomplete">
+                </form>
+                {{else}}
+                <form action = "/tasks/{{this._id}}/complete" method="POST">
+                    <input type="submit" name="toggle" class="toggle" value="Mark Complete">
+                </form>
+                {{/if}}
+                </li>
             {{/each}}
             </ul>
         {{else}}
@@ -25,17 +40,41 @@
     <hr>
     <div>
         <h4>Add a new task</h4>
+        <form class="createTask" action="/task/create" method="POST">
+            <label for="name">Task name</label>
+            <input name="name" type="text"><br>
+            <label for="description">Task Description</label>
+            <input name="description" type="text"><br>
+            Collaborators<br>
+            <input name="collaborator1" type="email"><br>
+            <input name="collaborator2" type="email"><br>
+            <input name="collaborator3" type="email"><br>
+            <input type="submit" class="create-task-submit">
+        </form>
         </form>
     </div>
 
 {{else}}
 <div>
-  Login
+    <form class="login" action="/user/login" method="POST">
+        <label for="email">Email</label>
+        <input name="email" id="email" type="text"><br>
+        <label for="password">Password</label>
+        <input name="password"  id="password" type="text"><br>
+        <input type="submit"  class="log-in-submit">
+    </form>
 </div>
 
 <div><hr></div>
 
 <div>
-  Register
+    <form class="register" action="/user/register" method="POST" class="signup-form" style="display: block;">
+      <input name="name" type="text" class="text-input" placeholder="first &amp; last name">
+      <input name="email" type="email" class="text-input" placeholder="email">
+      <input name="password" type="password" class="text-input" placeholder="password">
+      <input name="passwordConfirmation" type="password" class="text-input" placeholder="password confirmation">
+      <input class="sign-up-submit" type="submit">
+    </form>
 </div>
 {{/if}}
+
